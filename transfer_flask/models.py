@@ -19,8 +19,9 @@ class Users(db.Model, UserMixin):
     is_admin = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
-        return f"'id': {self.id}>\n'phone_number': '{self.phone_number}'" \
-               f"'name': {self.name}>"
+        return f"<'id': {self.id}>\n'" \
+               f"<phone_number': '{self.phone_number}'>\n" \
+               f"<'name': {self.name}>\n"
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
@@ -47,10 +48,13 @@ class Users(db.Model, UserMixin):
 
 
 class Transaction(db.Model):
+
+    __tablename__ = 'transaction'
+
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id',
                         ondelete='CASCADE'), nullable=False)
-    amount = db.Column(db.Integer, nullable=False)
+    amount = db.Column(db.Float, nullable=False)
     currency = db.Column(db.String(3), default='MXN')
     destination = db.Column(db.String, nullable=False)
 
@@ -63,21 +67,31 @@ class Transaction(db.Model):
         if not self.destination:
             Users.get_email(self.destination)
 
+        print("USER ID: ", self.user_id)
+        print("EMAIL DESTINATARIO:", self.destination)
+
         saved = False
         count = 0
         while not saved:
             try:
                 db.session.commit()
+                print("Commit success!!!")
                 saved = True
-            except IntegrityError:
+            except IntegrityError as e:
+                print("Error de integridad: ", count, e)
                 count += 1
+        else:
+            print("Datos a guardar: {} | {} | {} | {}".format(self.user_id,
+                                                              self.amount,
+                                                              self.currency,
+                                                              self.destination))
 
     def public_url(self):
         return url_for('show_trans', amount=self.amount)
 
     @staticmethod
     def get_by_user(id):
-        return Transaction.query.filter_by(user_id=id).first()
+        return Transaction.query.filter_by(user_id=id)
 
     @staticmethod
     def get_all():

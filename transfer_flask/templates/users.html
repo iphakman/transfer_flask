@@ -8,7 +8,8 @@
             <tr><td><a href="/users/{{ user.id }}">{{ user.id }}</a></td>
             <td>{{ user.name }}</td>
             <td>{{ user.email }}</td>
-            <td><a href="/users/{{ user.id }}/transaction/">{{ user.id }}</a></td></tr>
+            <td><a href="/users/{{ user.id }}/transaction/">view</a></td>
+            <td><a href="/transaction/{{ user.id }}">add</a></td></tr>
         {% endfor %}
     </table>
 {% endblock %}

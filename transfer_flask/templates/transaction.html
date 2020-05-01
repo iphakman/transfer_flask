@@ -1,10 +1,25 @@
 {% extends 'base_template.html' %}
 
-{% block title %}USER: {{ id }}{% endblock %}
+{% block title %}USER: {{ user.id }}{% endblock %}
 
 {% block content %}
 
-    <h1>{{ id }}</h1>
-    {{ trans }}
+    <h1>{{ user.name }} - {{ user.phone_number }}</h1>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>AMOUNT</th>
+            <th>CURRENCY</th>
+            <th>RECEIVER</th>
+        </tr>
+    {% for tran in trans %}
+        <tr>
+            <td>{{ tran.id }}</td>
+            <td>{{ tran.amount }}</td>
+            <td>{{ tran.currency }}</td>
+            <td><a href="/">{{ tran.destination }}</a></td>
+        </tr>
+    {% endfor %}
+    </table>
 
 {% endblock %}

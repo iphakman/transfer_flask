@@ -1,6 +1,6 @@
 {% extends "base_template.html" %}
 
-{% block title %}List users{% endblock %}
+{% block title %}Add Transaction{% endblock %}
 
 {% block content %}
     {% if error %}
@@ -9,7 +9,18 @@
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
         <div>
-            {{ }}
+            {{ form.origin.label }}
+            {{ form.origin }}<br>
+            {% for error in form.origin.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
+            {{ form.name.label }}
+            {{ form.name }}<br>
+            {% for error in form.name.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
         </div>
         <div>
             {{ form.destination.label }}

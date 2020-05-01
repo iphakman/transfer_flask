@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField, IntegerField
+from wtforms import StringField, SubmitField, PasswordField, IntegerField, FloatField
 from wtforms.validators import DataRequired, Length
 
 
@@ -19,6 +19,10 @@ class LoginForm(FlaskForm):
 
 
 class AddTransForm(FlaskForm):
+    origin = IntegerField('user_id', validators=[DataRequired()])
+    name = StringField('name')
     destination = StringField('destination', validators=[DataRequired()])
     currency = StringField('currency', validators=[DataRequired()], default='MXN')
-    amount = IntegerField('amount', validators=[DataRequired()])
+    amount = FloatField('amount', validators=[DataRequired()])
+    submit = SubmitField('Agregar')
+

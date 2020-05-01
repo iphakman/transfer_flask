@@ -39,19 +39,29 @@ def login():
 @app.route('/users/<int:id>/transaction/')
 def show_transaction(id):
     trans = Transaction.get_by_user(id)
+    print("Esto esta en trans", trans)
+    user = Users.get_by_id(id)
+    print(user)
     if trans is None:
         abort(404)
-    return render_template('transaction.html', trans=trans, id=id)
+    return render_template('transaction.html', trans=trans, user=user)
 
 
-@app.route('/transaction/<int:id>')
+@app.route('/transaction/<int:id>', methods=['GET', 'POST'])
 def create_transaction(id):
-    user = Users.get_by_id(id)
-    if user is None:
-        abort(404)
+    # user = Users.get_by_id(id)
+    # print(user.name, user.id, user.email, user.msdi)
+    # if user.id is None:
+    #     abort(404)
 
     form = AddTransForm()
     if form.validate_on_submit():
+        # if user.id:
+        #     origin = user.name
+        #     name = user.name
+        # else:
+        origin = form.origin.data
+        name = form.name.data
         destination = form.destination.data
         currency = form.currency.data
         amount = form.amount.data
@@ -59,14 +69,18 @@ def create_transaction(id):
         if destiny is None:
             error = f'El email {destination} no existe.'
         else:
-            trans = Transaction(user_id=user.id, amount=amount,
-                                currency=currency, destination=destination)
+            user = Users.get_by_id(origin)
+            trans = Transaction(user_id=user.id,
+                                amount=amount,
+                                currency=currency,
+                                destination=destination)
 
             trans.save()
 
             next_page = request.args.get('next', None)
             if not next_page or url_parse(next_page).netloc != '':
-                next_page = url_for('show_transaction', variable=id)
+                next_page = url_for('show_transaction', id=origin)
+            print(next_page)
             return redirect(next_page)
 
     return render_template("transaction_form.html", form=form)
