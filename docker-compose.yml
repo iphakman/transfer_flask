@@ -1,0 +1,39 @@
+version: '3.6'
+
+services:
+  api:
+    container_name: umba-transfer-api
+    build: .
+    depends_on:
+      - db
+    environment:
+      STAGE: test
+      SQLALCHEMY_DATABASE_URI: postgresql+psycopg2://tiernan:password@localhost:5432/transfer_money
+    networks:
+      - KAKA
+    ports:
+      - 5000:5000
+    volumes:
+      - ./transfer_flask:/usr/src/app/transfer_flask
+      - ./migrations:/usr/src/app/migrations
+    restart: always
+
+  db:
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: tiernan
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: transfer_money
+    image: postgres:latest
+    networks:
+      - KAKA
+    ports:
+      - 5405:5432
+    restart: always
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+
+networks:
+  KAKA:
+    driver: bridge
+
