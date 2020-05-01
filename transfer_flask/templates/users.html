@@ -3,11 +3,12 @@
 {% block title %}List users{% endblock %}
 
 {% block content %}
-    <ul>
+    <table>
         {% for user in users %}
-            <li><a href="{{ user.public_url() }}">{{ user.id }}</a></li>
-            <li>{{ user.name }}</li>
-            <li>{{ user.email }}</li>
+            <tr><td><a href="/users/{{ user.id }}">{{ user.id }}</a></td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td><a href="/users/{{ user.id }}/transaction/">{{ user.id }}</a></td></tr>
         {% endfor %}
-    </ul>
+    </table>
 {% endblock %}

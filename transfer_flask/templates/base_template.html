@@ -5,19 +5,15 @@
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
-<div>
-    <ul class="user-info">
-        <li><a href="{{ url_for('index') }}">Home</a></li>
-        {% if current_user.is_anonymous %}
-            <li><a href="{{ url_for('login') }}"<Login></a></li>
-            <li> | </li>
-            <li><a href="{{ url_for('show_signup_form') }}">Registrar</a></li>
-        {% else %}
-            <li>{{ current_user.name }}</li>
-            <li> | </li>
-            <li><a href="{{ url_for('logout') }}">Logout</a></li>
-        {% endif %}
-    </ul>
+<div id='barrainformativa' align="right">
+    <a href="{{ url_for('index') }}">Home</a>
+    {% if current_user.is_anonymous %}
+        <a href="{{ url_for('login') }}">Login</a>
+        <a href="{{ url_for('user_form') }}">Registrar</a>
+    {% else %}
+        {{ current_user.name }}
+        <a href="{{ url_for('logout') }}">Logout</a>
+    {% endif %}
 </div>
 {% block content %}{% endblock %}
 </body>

@@ -1,30 +1,31 @@
 from flask_login import UserMixin
 from flask import url_for
 from werkzeug.security import generate_password_hash, check_password_hash
-from run import db
+from . import db
 from sqlalchemy.exc import IntegrityError
 
 
-class Users(UserMixin):
+class Users(db.Model, UserMixin):
 
-    __tablename__ = ''
+    __tablename__ = 'users'
 
-    def __init__(self):
-        self.id = db.Column(db.Integer, primary_key=True)
-        self.name = db.Column(db.String(80), nullable=False)
-        self.last_name = db.Column(db.String(80), nullable=False)
-        self.password = db.Column(db.String(40), nullable=False)
-        self.email = db.Column(db.String(256), nullable=False)
-        self.msdi = db.Column(db.String(50), nullable=False)
-        self.is_admin = db.Column(db.Boolean, default=False)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), nullable=False)
+    last_name = db.Column(db.String(80), nullable=False)
+    phone_number = db.Column(db.Integer, nullable=False)
+    password = db.Column(db.String(40), nullable=False)
+    email = db.Column(db.String(256), unique=True, nullable=False)
+    msdi = db.Column(db.String(50), nullable=False)
+    is_admin = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
-        return f"<User {self.email}>\n<ID {self.id}>"
+        return f"'id': {self.id}>\n'phone_number': '{self.phone_number}'" \
+               f"'name': {self.name}>"
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
 
-    def get_password(self, password):
+    def check_password(self, password):
         return check_password_hash(self.password, password)
 
     def save(self):
@@ -47,11 +48,11 @@ class Users(UserMixin):
 
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('Users.id',
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id',
                         ondelete='CASCADE'), nullable=False)
     amount = db.Column(db.Integer, nullable=False)
-    destination = db.Column(db.String, db.ForeignKey('Users.email'),
-                            nullable=False)
+    currency = db.Column(db.String(3), default='MXN')
+    destination = db.Column(db.String, nullable=False)
 
     def __repr__(self):
         return f'<User {self.user_id}\n{self.id}>'
@@ -75,8 +76,8 @@ class Transaction(db.Model):
         return url_for('show_trans', amount=self.amount)
 
     @staticmethod
-    def get_by_id(id):
-        return Transaction.query.filter_by(id=id).first()
+    def get_by_user(id):
+        return Transaction.query.filter_by(user_id=id).first()
 
     @staticmethod
     def get_all():

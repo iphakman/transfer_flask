@@ -30,3 +30,12 @@ a img {
 sup, sub {
     line-height: 0
 }
+
+#barrainformativa {
+bgcolor: "#FF00AB"
+margin-left: -40px;
+width: 100%
+float: center;
+position: fixed;
+z-index: 601;
+}

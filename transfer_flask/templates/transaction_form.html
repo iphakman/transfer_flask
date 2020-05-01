@@ -1,0 +1,39 @@
+{% extends "base_template.html" %}
+
+{% block title %}List users{% endblock %}
+
+{% block content %}
+    {% if error %}
+        <p style="color: red;"><strong>Error:</strong> {{ Error }}>
+    {% endif %}
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <div>
+            {{ }}
+        </div>
+        <div>
+            {{ form.destination.label }}
+            {{ form.destination }}<br>
+            {% for error in form.destination.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
+            {{ form.amount.label }}
+            {{ form.amount }}<br>
+            {% for error in form.amount.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
+            {{ form.currency.label }}
+            {{ form.currency }}<br>
+            {% for error in form.currency.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
+            {{ form.submit() }}
+        </div>
+    </form>
+{% endblock %}
