@@ -6,6 +6,7 @@ from werkzeug.urls import url_parse
 from flask_migrate import Migrate
 
 app = create_app()
+# app.send_static_file('base.css')
 
 from .models import Users, Transaction
 login_manager = LoginManager(app)

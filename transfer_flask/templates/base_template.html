@@ -2,10 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css">
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
-<div id='barrainformativa' align="right">
+<header>
+<nav class="menu">
+<div class="header-container" id='barrainformativa' align="right"></div>
+
     <a href="{{ url_for('index') }}">Home</a>
     {% if current_user.is_anonymous %}
         <a href="{{ url_for('login') }}">Login</a>
@@ -14,6 +18,11 @@
         <a href="{{ url_for('logout') }}">Logout</a>
     {% endif %}
 </div>
-{% block content %}{% endblock %}
+</nav>
+</header>
+<br>
+<div>
+    {% block content %}{% endblock %}
+</div>
 </body>
 </html>
