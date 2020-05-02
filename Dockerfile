@@ -6,7 +6,6 @@ WORKDIR /usr/src/app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 ENV FLASK_APP /usr/src/app/transfer_flask/run.py
-ENV FLASK_RUN_HOST 0.0.0.0
 
 RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev
 
