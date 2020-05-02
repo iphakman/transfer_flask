@@ -39,9 +39,7 @@ def login():
 @app.route('/users/<int:id>/transaction/')
 def show_transaction(id):
     trans = Transaction.get_by_user(id)
-    print("Esto esta en trans", trans)
     user = Users.get_by_id(id)
-    print(user)
     if trans is None:
         abort(404)
     return render_template('transaction.html', trans=trans, user=user)
@@ -49,17 +47,9 @@ def show_transaction(id):
 
 @app.route('/transaction/<int:id>', methods=['GET', 'POST'])
 def create_transaction(id):
-    # user = Users.get_by_id(id)
-    # print(user.name, user.id, user.email, user.msdi)
-    # if user.id is None:
-    #     abort(404)
 
     form = AddTransForm()
     if form.validate_on_submit():
-        # if user.id:
-        #     origin = user.name
-        #     name = user.name
-        # else:
         origin = form.origin.data
         name = form.name.data
         destination = form.destination.data
