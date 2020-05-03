@@ -1,0 +1,23 @@
+{% extends "base_formulario.html" %}
+
+{% block title %}Sign up{% endblock %}
+
+{% block content %}
+
+<form action="" class="form_contact" method="post" novalidate>
+    <div class="user_info">
+        <h2>LOGIN</h2>
+        {{ form.hidden_tag() }}
+
+        {{ form.email }}
+        {{ form.email.label }}
+
+        {{ form.password }}
+        {{ form.password.label }}
+
+        {{ form.submit(id="btnSend") }}
+        <!--<input type="button" value="Login" id="btnSend">-->
+    </div>
+</form>
+
+{% endblock %}

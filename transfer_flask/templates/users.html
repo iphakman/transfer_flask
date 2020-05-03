@@ -3,13 +3,15 @@
 {% block title %}List users{% endblock %}
 
 {% block content %}
-    <table>
-        {% for user in users %}
-            <tr><td><a href="/users/{{ user.id }}">{{ user.id }}</a></td>
-            <td>{{ user.name }}</td>
-            <td>{{ user.email }}</td>
-            <td><a href="/users/{{ user.id }}/transaction/">view</a></td>
-            <td><a href="/transaction/{{ user.id }}">add</a></td></tr>
-        {% endfor %}
+    <table class="form_contact">
+        <div class="user_info">
+            {% for user in users %}
+                <tr><td><a href="/users/{{ user.id }}">{{ user.id }}</a></td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+                <td><a href="/users/{{ user.id }}/transaction">view</a></td>
+                <td><a href="/transaction/{{ user.id }}">add</a></td></tr>
+            {% endfor %}
+        </div>
     </table>
 {% endblock %}

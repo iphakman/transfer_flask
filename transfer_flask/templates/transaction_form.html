@@ -3,48 +3,23 @@
 {% block title %}Add Transaction{% endblock %}
 
 {% block content %}
-    {% if error %}
-        <p style="color: red;"><strong>Error:</strong> {{ Error }}>
-    {% endif %}
-    <form action="" method="post" novalidate>
+    <form action="/" class="form_contact" methods="post" novalidate>
         {{ form.hidden_tag() }}
-        <div>
+
+        <div class="user_info">
             {{ form.origin.label }}
-            {{ form.origin }}<br>
-            {% for error in form.origin.errors %}
-            <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-        </div>
-        <div>
-            {{ form.name.label }}
-            {{ form.name }}<br>
-            {% for error in form.name.errors %}
-            <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-        </div>
-        <div>
+            {{ form.origin }}
+
             {{ form.destination.label }}
-            {{ form.destination }}<br>
-            {% for error in form.destination.errors %}
-            <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-        </div>
-        <div>
+            {{ form.destination }}
+
             {{ form.amount.label }}
-            {{ form.amount }}<br>
-            {% for error in form.amount.errors %}
-            <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-        </div>
-        <div>
+            {{ form.amount }}
+
             {{ form.currency.label }}
-            {{ form.currency }}<br>
-            {% for error in form.currency.errors %}
-            <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-        </div>
-        <div>
-            {{ form.submit() }}
+            {{ form.currency }}
+
+            {{ form.submit(id="btnTran") }}
         </div>
     </form>
 {% endblock %}

@@ -21,7 +21,7 @@ def index():
     return render_template('users.html', users=users)
 
 
-@app.route('/login', methods=['GET'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
@@ -34,28 +34,10 @@ def login():
             if not next_page or url_parse(next_page).netloc != '':
                 next_page = url_for('index')
             return redirect(next_page)
-    return render_template('login_form.html', form=form)
+    return render_template('signup_form.html', form=form)
 
 
-@app.route('/new_login', methods=['GET'])
-def newlogin():
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = Users.get_email(form.email.data)
-        if user is not None and user.check_password(form.password.data):
-            login_user(user, remember=form.remember_me.data)
-            print(user)
-            next_page = request.args.get('next')
-            print(next_page)
-            if not next_page or url_parse(next_page).netloc != '':
-                next_page = url_for('index')
-            return redirect(next_page)
-    return render_template('new_signup.html', form=form)
-
-
-@app.route('/users/<int:id>/transaction/')
+@app.route('/users/<int:id>/transaction')
 def show_transaction(id):
     trans = Transaction.get_by_user(id)
     user = Users.get_by_id(id)
@@ -65,6 +47,7 @@ def show_transaction(id):
 
 
 @app.route('/transaction/<int:id>', methods=['GET', 'POST'])
+@login_required
 def create_transaction(id):
 
     form = AddTransForm()
@@ -89,20 +72,20 @@ def create_transaction(id):
             next_page = request.args.get('next', None)
             if not next_page or url_parse(next_page).netloc != '':
                 next_page = url_for('show_transaction', id=origin)
-            print(next_page)
             return redirect(next_page)
 
     return render_template("transaction_form.html", form=form)
 
 
-@app.route("/users/", methods=['GET', 'POST'])
-# @login_required
+@app.route("/users", methods=['GET', 'POST'])
+@login_required
 def user_form():
     form = AddUserForm()
     if form.validate_on_submit():
         name = form.name.data
         last_name = form.last_name.data
         email = form.email.data
+        phone_number = form.phone_number.data
         msdi = form.msdi.data
         password = form.password.data
         user = Users.get_email(email)
@@ -111,7 +94,7 @@ def user_form():
         else:
             user = Users(name=name, last_name=last_name,
                          email=email, password=password,
-                         msdi=msdi)
+                         msdi=msdi, phone_number=phone_number)
             user.save()
 
             next_page = request.args.get('next', None)
@@ -119,7 +102,7 @@ def user_form():
                 next_page = url_for('index')
             return redirect(next_page)
 
-    return render_template("user_form.html", form=form)
+    return render_template("new_user_form.html", form=form)
 
 
 @app.route("/users/<int:id>/")

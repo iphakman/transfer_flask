@@ -1,50 +1,35 @@
-{% extends "base_template.html" %}
+{% extends "base_formulario.html" %}
 
 {% block title %}Add User{% endblock %}
 
 {% block content %}
-    {% if error %}
-        <p style="color: red;"><strong>Error:</strong> {{ Error }}>
-    {% endif %}
-    <form action="" method="post" novalidate>
-        {{ form.hidden_tag() }}
-        <div>
+
+    <form action="" class="form_contact" method="post" novalidate>
+        <div class="user_info">
+            <h2>ADD USER</h2>
+            {{ form.hidden_tag() }}
+
+            {{ form.name(size=64) }}
             {{ form.name.label }}
-            {{ form.name(size=64) }}<br>
-            {% for error in form.name.errors %}
-            <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-        </div>
-        <div>
+
+            {{ form.last_name }}
             {{ form.last_name.label }}
-            {{ form.last_name }}<br>
-            {% for error in form.last_name.errors %}
-            <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-        </div>
-        <div>
+
+            {{ form.email }}
             {{ form.email.label }}
-            {{ form.email }}<br>
-            {% for error in form.email.errors %}
-            <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-        </div>
-        <div>
+
+            {{ form.phone_number }}
+            {{ form.phone_number.label }}
+
+            {{ form.msdi }}
             {{ form.msdi.label }}
-            {{ form.msdi }}<br>
-            {% for error in form.msdi.errors %}
-            <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-        </div>
-        <div>
+
+            {{ form.password }}
             {{ form.password.label }}
-            {{ form.password }}<br>
-            {% for error in form.password.errors %}
-            <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-        </div>
-        <div>
-            {{ form.submit() }}
+
+            <!--<input type="button" value="Login" id="btnAddUser">-->
+            {{ form.submit(id="btnAddUser") }}
         </div>
     </form>
+
 {% endblock %}

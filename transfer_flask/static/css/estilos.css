@@ -17,6 +17,7 @@
 }
 
 body {
+    background-image: url("static/img/background_all.jpg");
     background: #DBDBDB;
     font-family: "Open sans";
 }
@@ -35,6 +36,18 @@ body {
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
 }
 
+/* Table design */
+.encabezado {
+    align: center;
+    background: #7F8C7E;
+    text-color: #fff;
+}
+
+.celda {
+    align: left;
+    background: #A5B2A4;
+}
+
 /* Informacion de contacto */
 
 .contact_info::before{
@@ -46,7 +59,7 @@ body {
     top: 0;
     left: 0;
 
-    background: #4091EC;
+    background: #42DE3A ;
     opacity: 0.9;
 }
 
@@ -108,12 +121,14 @@ body {
 }
 
 /* Formulario de contacto */
-form.form_contact{
+form.form_contact,
+table.form_contact{
     width: 62%;
     padding: 30px 40px;
 }
 
-form.form_contact h2{
+form.form_contact h2,
+table.form_contact h2{
     font-size: 25px;
     font-weight: 600;
     color: #303030;
@@ -125,7 +140,8 @@ form.contact_info .user_info{
     flex_direction: column;
 }
 
-form.contact_info label{
+form.contact_info label,
+table.form_contact label{
     font-weight: 600;
 }
 
@@ -149,10 +165,12 @@ form.form_contact textarea{
     max-height: 90px;
 }
 
-form.form_contact input[type="button"]{
+form.form_contact input[type="button"],
+#btnAddUser, #btnSend{
+
     display: flex;
     width: 180px;
-    background: #4091EC;
+    background: #42DE3A;
     padding: 10px;
     border: none;
     border-radius: 25px;

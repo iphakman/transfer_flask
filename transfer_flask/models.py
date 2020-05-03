@@ -27,7 +27,7 @@ class Users(db.Model, UserMixin):
         self.password = generate_password_hash(password)
 
     def check_password(self, password):
-        return check_password_hash(self.password, password)
+        return self.password == password
 
     def save(self):
         if not self.id:
