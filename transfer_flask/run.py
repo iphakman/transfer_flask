@@ -37,6 +37,24 @@ def login():
     return render_template('login_form.html', form=form)
 
 
+@app.route('/new_login', methods=['GET'])
+def newlogin():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = Users.get_email(form.email.data)
+        if user is not None and user.check_password(form.password.data):
+            login_user(user, remember=form.remember_me.data)
+            print(user)
+            next_page = request.args.get('next')
+            print(next_page)
+            if not next_page or url_parse(next_page).netloc != '':
+                next_page = url_for('index')
+            return redirect(next_page)
+    return render_template('new_signup.html', form=form)
+
+
 @app.route('/users/<int:id>/transaction/')
 def show_transaction(id):
     trans = Transaction.get_by_user(id)

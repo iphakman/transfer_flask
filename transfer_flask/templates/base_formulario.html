@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width-device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+
+    <link rel="stylesheet" href="static/css/estilos.css">
+    <link rel="stylesheet" href="static/css/font-awesome.css">
+
+    <script src="static/js/jquery-3.5.0.js"></script>
+    <script src="static/js/script.js"></script>
+</head>
+<body>
+    <!--<div class="modal_wrap">-->
+        <!--<div class="mensaje_modal">-->
+            <!--<h3>Errores encontrados</h3>-->
+            <!--<p>Escriba un email valido</p>-->
+            <!--<p>Password</p>-->
+            <!--<span id="btnClose">Close</span>-->
+        <!--</div>-->
+    <!--</div>-->
+
+<section class="form_wrap">
+    <section class="contact_info">
+        <section class="info_title">
+            <span class="icon-user"></span>
+            <h2>INFORMACION<br>DE CONTACTO</h2>
+        </section>
+        <section class="info_items">
+            <p><span class="icon-envelope"></span>info.flask@noexisto.com</p>
+            <p><span class="icon-mobile-phone"></span>+52(55) 19 04 1234</p>
+        </section>
+    </section>
+    {% block content %}{% endblock %}
+</section>
+</body>
+</html>
