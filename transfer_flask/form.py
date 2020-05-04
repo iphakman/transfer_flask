@@ -11,6 +11,9 @@ class AddUserForm(FlaskForm):
     phone_number = IntegerField('Phone', validators=[DataRequired()])
     msdi = StringField('MSDI', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
+    balance = FloatField('Balance', validators=[DataRequired()])
+    currency = StringField('Currency', validators=[DataRequired()], default='MXN')
+    is_admin = BooleanField('is_admin', default=False)
     submit = SubmitField('Registrar')
 
 
@@ -27,4 +30,3 @@ class AddTransForm(FlaskForm):
     currency = StringField('currency', validators=[DataRequired()], default='MXN')
     amount = FloatField('amount', validators=[DataRequired()])
     submit = SubmitField('Agregar')
-

@@ -5,12 +5,21 @@
 {% block content %}
     <table class="form_contact">
         <div class="user_info">
+            <tr>
+                <th class="encabezado">USER ID</th>
+                <th class="encabezado">NAME</th>
+                <th class="encabezado">EMAIL</th>
+                <th class="encabezado">TRANSACTIONS</th>
+                <th class="encabezado">NEW TRANSACTION</th>
+            </tr>
             {% for user in users %}
-                <tr><td><a href="/users/{{ user.id }}">{{ user.id }}</a></td>
-                <td>{{ user.name }}</td>
-                <td>{{ user.email }}</td>
-                <td><a href="/users/{{ user.id }}/transaction">view</a></td>
-                <td><a href="/transaction/{{ user.id }}">add</a></td></tr>
+                <tr>
+                    <td class="celda"><a href="/users/{{ user.id }}">{{ user.id }}</a></td>
+                    <td class="celda">{{ user.name }}</td>
+                    <td class="celda">{{ user.email }}</td>
+                    <td class="celda"><a href="/users/{{ user.id }}/transaction">view</a></td>
+                    <td class="celda"><a href="/transaction/{{ user.id }}">add</a></td>
+                </tr>
             {% endfor %}
         </div>
     </table>

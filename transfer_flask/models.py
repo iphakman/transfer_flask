@@ -12,7 +12,7 @@ class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     last_name = db.Column(db.String(80), nullable=False)
-    phone_number = db.Column(db.Integer, nullable=False)
+    phone_number = db.Column(db.String(10), nullable=False)
     password = db.Column(db.String(40), nullable=False)
     email = db.Column(db.String(256), unique=True, nullable=False)
     msdi = db.Column(db.String(50), nullable=False)
@@ -47,6 +47,66 @@ class Users(db.Model, UserMixin):
         return Users.query.all()
 
 
+class CurrencyConvert(db.Model):
+
+    __tablename__ = 'convertion'
+
+    id = db.Column(db.Integer, primary_key=True)
+    state = db.Column(db.String, nullable=False)
+    currency = db.Column(db.String, nullable=False)
+    symbol = db.Column(db.String, nullable=False)
+    iso_code = db.Column(db.String(3))
+    fractional_unit = db.Column(db.String, nullable=False)
+    variance = db.Column(db.Float)
+
+    @staticmethod
+    def get_by_currency(currency):
+        return Users.query.get(currency)
+
+    @staticmethod
+    def get_currency(cc):
+        r = CurrencyConvert.get_by_iso_code(cc)
+        return r.variance
+
+    @staticmethod
+    def translate(amount_m, from_currency, to_currency):
+        final_amount = amount_m
+        if from_currency != to_currency:
+            usd = CurrencyConvert.get_currency(from_currency)
+            final_amount *= usd
+            value = CurrencyConvert.get_currency(from_currency)
+            final_amount *= value
+        return amount_m
+
+
+class Balance(db.Model):
+
+    __tablename__ = 'user_balance'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id',
+                        ondelete='CASCADE'), nullable=False)
+    amount = db.Column(db.Float, nullable=False)
+    currency = db.Column(db.String(3))
+    last_modified = db.Column(db.DateTime, nullable=False)
+    transaction_id = db.Column(db.Integer, db.ForeignKey('transaction.id',),
+                               nullable=False)
+
+    def __repr__(self):
+        return f"<user_id: {self.user_id}>\n" \
+               f"<amount: {self.phone_number}>\n" \
+               f"<currency: {self.currency}>\n"
+
+    def save(self):
+        if not self.id:
+            db.session.add(self)
+        db.session.commit()
+
+    @staticmethod
+    def get_by_user_id(id):
+        return Balance.query.get(id)
+
+
 class Transaction(db.Model):
 
     __tablename__ = 'transaction'
@@ -57,6 +117,7 @@ class Transaction(db.Model):
     amount = db.Column(db.Float, nullable=False)
     currency = db.Column(db.String(3), default='MXN')
     destination = db.Column(db.String, nullable=False)
+    status = db.column(db.String(2), nullable=False)
 
     def __repr__(self):
         return f'<User {self.user_id}\n{self.id}>'

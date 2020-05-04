@@ -1,4 +1,6 @@
-transfer_flask/__pycache__/*
+migrations/*.pyc
 postgres_data
+transfer_flask/__pycache__/*.pyc
 venv
 .idea
+old_information
