@@ -1,5 +1,4 @@
 $(document).ready(function(){
-//    alert('funciono')
 
     $('#btnSend').click(function(){
 
@@ -43,7 +42,6 @@ $(document).ready(function(){
 })
 
 $(document).ready(function(){
-//    alert('funciono')
 
     $('#btnAddUser').click(function(){
 
@@ -90,6 +88,55 @@ $(document).ready(function(){
             $('#password').css("border-bottom-color", "#F14B4B")
         } else {
             $('#password').css("border-bottom-color", "#d1d1d1")
+        }
+
+        // ENVIANDO MENSAJE ==============================
+        if(errores == '' == false){
+            var mensajeModal = '<div class="modal_wrap">' +
+                                    '<div class="mensaje_modal">'+
+                                        '<h3>Errores encontrados</h3>'+
+                                        errores+
+                                        '<span id="btnClose">Close</span>'
+                                    '</div>'+
+                                '</div>'
+
+            $('body').append(mensajeModal);
+        }
+
+        // CERRANDO MODAL ==============================
+        $('#btnClose').click(function(){
+            $('.modal_wrap').remove();
+        });
+    });
+
+})
+
+$(document).ready(function(){
+
+    $('#btnTran').click(function(){
+
+        var errores = '';
+
+        // Validando Formulario ==============================
+        if($('#origin').val() == ''){
+            errores += '<p>Necesita un origin id valido</p>'
+            $('#origin').css("border-bottom-color", "#F14B4B")
+        } else {
+            $('#origin').css("border-bottom-color", "#d1d1d1")
+        }
+
+        if($('#destination').val() == ''){
+            errores += '<p>Necesita un destination email.</p>'
+            $('#destination').css("border-bottom-color", "#F14B4B")
+        } else {
+            $('#destination').css("border-bottom-color", "#d1d1d1")
+        }
+
+        if($('#amount').val() == ''){
+            errores += '<p>Necesita un destination email.</p>'
+            $('#amount').css("border-bottom-color", "#F14B4B")
+        } else {
+            $('#amount').css("border-bottom-color", "#d1d1d1")
         }
 
         // ENVIANDO MENSAJE ==============================

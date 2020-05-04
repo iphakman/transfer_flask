@@ -3,23 +3,26 @@
 {% block title %}Add Transaction{% endblock %}
 
 {% block content %}
-    <form action="/" class="form_contact" methods="post" novalidate>
+
+<form action="/" class="form_contact" methods="post" novalidate>
+    <div class="user_info">
+        <h2>ADD TRANSACTION</h2>
         {{ form.hidden_tag() }}
 
-        <div class="user_info">
-            {{ form.origin.label }}
-            {{ form.origin }}
+        {{ form.origin.label }}
+        {{ form.origin }}
 
-            {{ form.destination.label }}
-            {{ form.destination }}
+        {{ form.destination.label }}
+        {{ form.destination }}
 
-            {{ form.amount.label }}
-            {{ form.amount }}
+        {{ form.amount.label }}
+        {{ form.amount }}
 
-            {{ form.currency.label }}
-            {{ form.currency }}
+        {{ form.currency.label }}
+        {{ form.currency }}
 
-            {{ form.submit(id="btnTran") }}
-        </div>
-    </form>
+        {{ form.submit(id="btnTran") }}
+    </div>
+</form>
+
 {% endblock %}
