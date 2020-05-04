@@ -4,7 +4,7 @@ setup(
     # Application name:
     name="transfer_money",
     # Version number:
-    version="0.7.0",
+    version="0.9.1",
     # Application author details:
     author="Joshue Perez",
     author_email="joshuefpj@gmail.com",
