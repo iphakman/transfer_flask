@@ -1,11 +1,11 @@
+from flask_paginate import Pagination, get_page_args
 from flask import render_template, redirect, request, url_for, abort
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
 from .form import AddUserForm, LoginForm, AddTransForm, AddCurrencies
 from datetime import datetime
-from . import create_app, db
+from . import create_app, db, get_currency_date
 from werkzeug.urls import url_parse
 from flask_migrate import Migrate
-from .push_currencies import get_currency_date
 
 app = create_app()
 # app.send_static_file('base.css')
@@ -103,10 +103,22 @@ def create_transaction(id):
     return render_template("transaction_form.html", form=form)
 
 
+def get_pagina(milist, offset=0, per_page=20):
+    return milist[offset:offset + per_page]
+
+
 @app.route('/currencies', methods=['GET'])
 def get_currencies():
     currencies = CurrencyConvert.get_all()
-    return render_template("currencies_list.html", currencies=currencies)
+    total = len(currencies)
+    page, per_page, offset = get_page_args(page_parameter='page',
+                                           per_page_parameter='per_page')
+
+    pagination_list = get_pagina(currencies, offset=offset, per_page=per_page)
+    pagination = Pagination(page=page, per_page=20, total=total)
+
+    return render_template("currencies_list.html", currencies=pagination_list, page=page,
+                           per_page=per_page, pagination=pagination)
 
 
 @app.route("/currencies_add", methods=['GET', 'POST'])

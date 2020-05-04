@@ -17,7 +17,7 @@
                 <th class="encabezado">FRACTIONAL UNIT</th>
                 <th class="encabezado">VARIANCE</th>
             </tr>
-            {% for user in users %}
+            {% for currency in currencies %}
                 <tr>
                     <td class="celda">{{ currency.id }}</td>
                     <td class="celda">{{ currency.state }}</td>
@@ -30,4 +30,5 @@
             {% endfor %}
         </div>
     </table>
+    {{ pagination.links }}
 {% endblock %}
