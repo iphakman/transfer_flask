@@ -64,8 +64,7 @@ def create_transaction(id):
             trans = Transaction(user_id=user.id,
                                 amount=amount,
                                 currency=currency,
-                                destination=destination,
-                                status='P')
+                                destination=destination)
 
             balance = Balance.get_by_user_id(user.id)
 

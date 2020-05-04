@@ -117,7 +117,7 @@ class Transaction(db.Model):
     amount = db.Column(db.Float, nullable=False)
     currency = db.Column(db.String(3), default='MXN')
     destination = db.Column(db.String, nullable=False)
-    status = db.column(db.String(2), nullable=False)
+    status = db.Column(db.String(2), default='P')
 
     def __repr__(self):
         return f'<User {self.user_id}\n{self.id}>'
