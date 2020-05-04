@@ -1,10 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "base_template.html" %}
+
+{% block title %}Renovar monedas.{% endblock %}
+
+{% block content %}
+
+<form action="" class="form_contact" method="post" novalidate>
+    <div class="user_info">
+        <h2>RENOVAR MONEDAS</h2>
+
+        {{ form.filename }}
+
+        {{ form.submit(id="btnRenew") }}
+    </div>
+</form>
+
+{% endblock %}

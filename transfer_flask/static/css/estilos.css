@@ -39,8 +39,8 @@ body {
 /* Table design */
 .encabezado {
     align: center;
-    background: #7F8C7E;
-    text-color: #fff;
+    background: #7F8C00;
+    text-color: #FF0000;
 }
 
 .celda {
@@ -166,7 +166,8 @@ form.form_contact textarea{
 }
 
 form.form_contact input[type="button"],
-#btnAddUser, #btnSend{
+#btnAddUser, #btnSend,
+#btnTran, #btnRenew{
 
     display: flex;
     width: 180px;

@@ -75,8 +75,12 @@ class CurrencyConvert(db.Model):
             usd = CurrencyConvert.get_currency(from_currency)
             final_amount *= usd
             value = CurrencyConvert.get_currency(from_currency)
-            final_amount *= value
+            final_amount /= value
         return amount_m
+
+    @staticmethod
+    def get_all():
+        return CurrencyConvert.query.all()
 
 
 class Balance(db.Model):
@@ -89,8 +93,7 @@ class Balance(db.Model):
     amount = db.Column(db.Float, nullable=False)
     currency = db.Column(db.String(3))
     last_modified = db.Column(db.DateTime, nullable=False)
-    transaction_id = db.Column(db.Integer, db.ForeignKey('transaction.id',),
-                               nullable=False)
+    transaction_id = db.Column(db.Integer, db.ForeignKey('transaction.id',))
 
     def __repr__(self):
         return f"<user_id: {self.user_id}>\n" \

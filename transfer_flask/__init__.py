@@ -15,7 +15,6 @@ def create_app():
     app.app_context().push()
     db.init_app(app)
     # this will create all tables based on model.py
-    print("create all on ", db)
     with app.app_context():
         db.create_all()
         return app

@@ -1,10 +1,11 @@
 from flask import render_template, redirect, request, url_for, abort
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
-from .form import AddUserForm, LoginForm, AddTransForm
+from .form import AddUserForm, LoginForm, AddTransForm, AddCurrencies
 from datetime import datetime
 from . import create_app, db
 from werkzeug.urls import url_parse
 from flask_migrate import Migrate
+from .push_currencies import get_currency_date
 
 app = create_app()
 # app.send_static_file('base.css')
@@ -14,6 +15,7 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
 migrate = Migrate(app, db)
+db.create_all()
 
 
 @app.route('/')
@@ -68,8 +70,23 @@ def create_transaction(id):
 
             balance = Balance.get_by_user_id(user.id)
 
-            if balance.amount >= amount:
-                balance.amount -= amount
+            receiver = Balance.get_by_user_id(Users.get_email(destination))
+
+            if balance.currency != currency:
+                if balance.currency != 'USD':
+                    transfer_amount = CurrencyConvert.translate(amount,
+                                                                balance.currency,
+                                                                currency)
+                else:
+                    transfer_amount = balance.amount
+                if currency != 'USD':
+                    receiver_amount = CurrencyConvert.translate(amount,
+                                                                currency,
+                                                                receiver.currency)
+
+            if transfer_amount >= amount:
+                balance.amount -= transfer_amount
+                receiver.amount += receiver_amount
 
                 trans.status = 'S'
             else:
@@ -84,6 +101,51 @@ def create_transaction(id):
             return redirect(next_page)
 
     return render_template("transaction_form.html", form=form)
+
+
+@app.route('/currencies', methods=['GET'])
+def get_currencies():
+    currencies = CurrencyConvert.get_all()
+    return render_template("currencies_list.html", currencies=currencies)
+
+
+@app.route("/currencies_add", methods=['GET', 'POST'])
+def renew_currencies():
+
+    form = AddCurrencies()
+    print("form is AddCurrencies")
+    if form.validate_on_submit():
+        filename = form.filename.data
+        print("validate file...", filename)
+        if filename is None:
+            error = f'El archivo {filename} no existe.'
+            print(error)
+        else:
+            print("Validating currencies from file", filename)
+
+            with open(filename) as ff:
+                lines = ff.readlines()
+                print("Total lines: ", len(lines))
+
+                for line in lines:
+                    print("*** line:", line)
+                    values = line.split(',')
+                    currency = values[3]
+
+                    rate = get_currency_date(currency)
+
+                    currency_rate = CurrencyConvert(state=line[0], currency=line[1],
+                                                    symbol=line[2], iso_code=line[3],
+                                                    fractional_unit=line[4], variance=rate)
+
+                    currency_rate.save()
+
+            next_page = request.args.get('next', None)
+            if not next_page or url_parse(next_page).netloc != '':
+                next_page = url_for('currencies')
+            return redirect(next_page)
+
+    return render_template("renew_currencies.html", form=form)
 
 
 @app.route("/users", methods=['GET', 'POST'])
@@ -113,6 +175,8 @@ def user_form():
 
             balance_user = Balance(user_id=user.id, amount=balance,
                                    currency=currency, last_modified=datetime.now())
+
+            balance_user.save()
 
             next_page = request.args.get('next', None)
             if not next_page or url_parse(next_page).netloc != '':

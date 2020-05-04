@@ -1,3 +1,4 @@
+transfer_flask/create_tables_manual.py
 migrations/*.pyc
 postgres_data
 transfer_flask/__pycache__/*.pyc

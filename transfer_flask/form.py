@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import (StringField, SubmitField, PasswordField,
-                     IntegerField, FloatField, BooleanField)
+                     IntegerField, FloatField, BooleanField,
+                     FileField)
 from wtforms.validators import DataRequired, Length
 
 
@@ -30,3 +31,8 @@ class AddTransForm(FlaskForm):
     currency = StringField('currency', validators=[DataRequired()], default='MXN')
     amount = FloatField('amount', validators=[DataRequired()])
     submit = SubmitField('Agregar')
+
+
+class AddCurrencies(FlaskForm):
+    filename = FileField('File_name', validators=[DataRequired()])
+    submit = SubmitField('Renovar')
