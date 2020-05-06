@@ -41,6 +41,13 @@ def login():
     return render_template('signup_form.html', form=form)
 
 
+@app.route('/users/<int:id>')
+def show_user(id):
+    user = Users.get_by_id(id)
+    bal = Balance.get_by_user_id(id)
+    return render_template('user_id.html', user=user, balance=bal)
+
+
 @app.route('/users/<int:id>/transaction')
 def show_transaction(id):
     trans = Transaction.get_by_user(id)

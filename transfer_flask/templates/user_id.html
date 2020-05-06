@@ -1,0 +1,46 @@
+{% extends "base_template.html" %}
+
+{% block title %}List users{% endblock %}
+
+{% block content %}
+    <div class="user_info">
+        <table class="form_contact">
+            <tr>
+                <td class="encabezado">USER ID</td>
+                <td class="celda">{{ user.id }}</td>
+            </tr>
+            <tr>
+                <td class="encabezado">NAME</td>
+                <td class="celda">{{ user.name }}</td>
+            </tr>
+            <tr>
+                <td class="encabezado">LAST NAME</td>
+                <td class="celda">{{ user.last_name }}</td>
+            </tr>
+            <tr>
+                <td class="encabezado">EMAIL</td>
+                <td class="celda">{{ user.email }}</td>
+            </tr>
+            <tr>
+                <td class="encabezado">PHONE</td>
+                <td class="celda">{{ user.phone_number }}</td>
+            </tr>
+            <tr>
+                <td class="encabezado">MSDI</td>
+                <td class="celda">{{ user.msdi }}</td>
+            </tr>
+            <tr>
+                <td class="encabezado">amount</td>
+                <td class="celda">{{ balance.amount }}</td>
+            </tr>
+            <tr>
+                <td class="encabezado">currency</td>
+                <td class="celda">{{ balance.currency }}</td>
+            </tr>
+            <tr>
+                <td class="encabezado">LAST ACTIVITY DATE</td>
+                <td class="celda">{{ balance.last_modified }}</td>
+            </tr>
+        </table>
+    </div>
+{% endblock %}
