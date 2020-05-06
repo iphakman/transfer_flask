@@ -3,22 +3,22 @@
 {% block title %}Transactions{% endblock %}
 
 {% block content %}
-
-    <table width="100%">
-        <tr>
-            <th class="encabezado" width="10%">ID</th>
-            <th class="encabezado" width="15%">AMOUNT</th>
-            <th class="encabezado" width="15%">CURRENCY</th>
-            <th class="encabezado" width="60%">RECEIVER</th>
-        </tr>
-    {% for tran in trans %}
-        <tr>
-            <td class="celda" width="10%">{{ tran.id }}</td>
-            <td class="celda" width="15%">{{ tran.amount }}</td>
-            <td class="celda" width="15%">{{ tran.currency }}</td>
-            <td class="celda" width="60%"><a href="/">{{ tran.destination }}</a></td>
-        </tr>
-    {% endfor %}
-    </table>
-
+    <div class="user_info">
+        <table class="form_contact">
+            <tr>
+                <th class="encabezado" width="10%">ID</th>
+                <th class="encabezado" width="15%">AMOUNT</th>
+                <th class="encabezado" width="15%">CURRENCY</th>
+                <th class="encabezado" width="60%">RECEIVER</th>
+            </tr>
+            {% for tran in trans %}
+                <tr>
+                    <td class="celda" width="10%">{{ tran.id }}</td>
+                    <td class="celda" width="15%">{{ tran.amount }}</td>
+                    <td class="celda" width="15%">{{ tran.currency }}</td>
+                    <td class="celda" width="60%"><a href="/">{{ tran.destination }}</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 {% endblock %}

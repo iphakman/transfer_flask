@@ -3,8 +3,8 @@
 {% block title %}List users{% endblock %}
 
 {% block content %}
-    <table class="form_contact">
-        <div class="user_info">
+    <div class="user_info">
+        <table class="form_contact">
             <tr>
                 <th class="encabezado">USER ID</th>
                 <th class="encabezado">NAME</th>
@@ -21,6 +21,6 @@
                     <td class="celda"><a href="/transaction/{{ user.id }}">add</a></td>
                 </tr>
             {% endfor %}
-        </div>
-    </table>
+        </table>
+    </div>
 {% endblock %}

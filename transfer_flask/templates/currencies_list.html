@@ -3,11 +3,15 @@
 {% block title %}List users{% endblock %}
 
 {% block content %}
-    <table class="form_contact">
-        <div class="user_info">
-            <tr align="center">
-                <th colspan="7"><a href="/currencies_add">RENEW RATES</a></th>
-            </tr>
+    <div class="user_info">
+
+        <div>
+            <p align="center"><a href="/currencies_add">RENEW RATES</a></p>
+        </div>
+
+        {{ pagination.links }}
+        <table class="form_contact">
+
             <tr>
                 <th class="encabezado">ID</th>
                 <th class="encabezado">STATE</th>
@@ -28,7 +32,7 @@
                     <td class="celda">{{ currency.variance }}</td>
                 </tr>
             {% endfor %}
-        </div>
-    </table>
-    {{ pagination.links }}
+        </table>
+    </div>
+
 {% endblock %}

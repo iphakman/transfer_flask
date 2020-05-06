@@ -26,8 +26,9 @@ body {
 
 .form_wrap {
     width: 1050px;
-    height: 530px;
+    height: 630px;
     margin: 50px auto;
+
     display: flex;
 
     background: #fff;
@@ -122,9 +123,15 @@ body {
 
 /* Formulario de contacto */
 form.form_contact,
-table.form_contact{
+div.user_info{
     width: 62%;
-    padding: 30px 40px;
+    padding: 30px 20px;
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 form.form_contact h2,
@@ -135,11 +142,6 @@ table.form_contact h2{
     margin-bottom: 30px;
 }
 
-form.contact_info .user_info{
-    display: flex;
-    flex_direction: column;
-}
-
 form.contact_info label,
 table.form_contact label{
     font-weight: 600;
@@ -148,6 +150,7 @@ table.form_contact label{
 form.form_contact input{
     width: 100%;
     padding: 8px 0px 5px;
+    text-align: center;
 
     border: none;
     border-bottom: 2px solid #D1D1D1;
@@ -253,4 +256,8 @@ form.form_contact input[type="button"]:hover{
 
     float: right;
 
+}
+
+.pagination li{
+    display: inline;
 }

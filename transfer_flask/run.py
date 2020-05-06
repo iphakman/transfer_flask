@@ -1,6 +1,7 @@
 from flask_paginate import Pagination, get_page_args
-from flask import render_template, redirect, request, url_for, abort
-from flask_login import LoginManager, current_user, login_user, logout_user, login_required
+from flask import render_template, redirect, request, url_for, abort, session
+from flask_login import (LoginManager, current_user, login_user,
+                         logout_user, login_required, session_protected)
 from .form import AddUserForm, LoginForm, AddTransForm, AddCurrencies
 from datetime import datetime
 from . import create_app, db, get_currency_date
@@ -49,20 +50,25 @@ def show_transaction(id):
     return render_template('transaction.html', trans=trans, user=user)
 
 
-@app.route('/transaction/<int:id>', methods=['GET', 'POST'])
+@app.route('/transaction', methods=['GET', 'POST'])
 @login_required
-def create_transaction(id):
+def create_transaction():
+    user_loged = session['_user_id']
 
     form = AddTransForm()
     if form.validate_on_submit():
         destination = form.destination.data
         currency = form.currency.data
         amount = form.amount.data
+
+        print("will try to transfer {} {} from {} to {}".format(amount, currency, id, destination))
         destiny = Users.get_email(destination)
+        print("DESTINY:", destiny)
         if destiny is None:
             error = f'El email {destination} no existe.'
         else:
-            user = Users.get_by_id(id)
+            user = Users.get_by_id(user_loged)
+            print("now will transfer {} {} from {} to {}".format(amount, currency, user.email, destiny.email))
             trans = Transaction(user_id=user.id,
                                 amount=amount,
                                 currency=currency,
@@ -72,17 +78,20 @@ def create_transaction(id):
 
             receiver = Balance.get_by_user_id(Users.get_email(destination))
 
+            if balance.currency != 'USD':
+                transfer_amount = CurrencyConvert.translate(amount,
+                                                            balance.currency,
+                                                            currency)
+            else:
+                transfer_amount = balance.amount
+
             if balance.currency != currency:
-                if balance.currency != 'USD':
-                    transfer_amount = CurrencyConvert.translate(amount,
-                                                                balance.currency,
-                                                                currency)
-                else:
-                    transfer_amount = balance.amount
                 if currency != 'USD':
                     receiver_amount = CurrencyConvert.translate(amount,
                                                                 currency,
                                                                 receiver.currency)
+            else:
+                receiver_amount = transfer_amount
 
             if transfer_amount >= amount:
                 balance.amount -= transfer_amount
@@ -94,6 +103,7 @@ def create_transaction(id):
 
             trans.save()
             balance.save()
+            receiver.save()
 
             next_page = request.args.get('next', None)
             if not next_page or url_parse(next_page).netloc != '':
@@ -111,11 +121,12 @@ def get_pagina(milist, offset=0, per_page=20):
 def get_currencies():
     currencies = CurrencyConvert.get_all()
     total = len(currencies)
+    print("Total de monedas:", total)
     page, per_page, offset = get_page_args(page_parameter='page',
                                            per_page_parameter='per_page')
 
     pagination_list = get_pagina(currencies, offset=offset, per_page=per_page)
-    pagination = Pagination(page=page, per_page=20, total=total)
+    pagination = Pagination(page=page, per_page=per_page, total=total)
 
     return render_template("currencies_list.html", currencies=pagination_list, page=page,
                            per_page=per_page, pagination=pagination)
