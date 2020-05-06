@@ -61,49 +61,53 @@ def create_transaction():
         currency = form.currency.data
         amount = form.amount.data
 
-        print("will try to transfer {} {} from {} to {}".format(amount, currency, id, destination))
         destiny = Users.get_email(destination)
-        print("DESTINY:", destiny)
         if destiny is None:
             error = f'El email {destination} no existe.'
         else:
             user = Users.get_by_id(user_loged)
-            print("now will transfer {} {} from {} to {}".format(amount, currency, user.email, destiny.email))
             trans = Transaction(user_id=user.id,
                                 amount=amount,
                                 currency=currency,
-                                destination=destination)
+                                destination=destiny.email)
 
             balance = Balance.get_by_user_id(user.id)
 
-            receiver = Balance.get_by_user_id(Users.get_email(destination))
+            receiver = Balance.get_by_user_id(destiny.id)
 
-            if balance.currency != 'USD':
+            if currency != 'USD':
                 transfer_amount = CurrencyConvert.translate(amount,
-                                                            balance.currency,
-                                                            currency)
+                                                            currency,
+                                                            balance.currency)
             else:
-                transfer_amount = balance.amount
+                transfer_amount = amount
 
-            if balance.currency != currency:
-                if currency != 'USD':
+            if receiver.currency != 'USD':
                     receiver_amount = CurrencyConvert.translate(amount,
                                                                 currency,
                                                                 receiver.currency)
             else:
                 receiver_amount = transfer_amount
 
-            if transfer_amount >= amount:
-                balance.amount -= transfer_amount
-                receiver.amount += receiver_amount
-
+            if transfer_amount <= balance.amount:
                 trans.status = 'S'
+                trans.save()
+
+                balance.amount -= transfer_amount
+                balance.last_modified = datetime.now()
+
+                receiver.amount += receiver_amount
+                receiver.last_modified = datetime.now()
+
+                receiver.transaction_id = trans.id
+                balance.transaction_id = trans.id
+
+                balance.save()
+                receiver.save()
+
             else:
                 trans.status = 'IF'
-
-            trans.save()
-            balance.save()
-            receiver.save()
+                trans.save()
 
             next_page = request.args.get('next', None)
             if not next_page or url_parse(next_page).netloc != '':

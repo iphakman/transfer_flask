@@ -26,10 +26,9 @@ class LoginForm(FlaskForm):
 
 
 class AddTransForm(FlaskForm):
-    origin = IntegerField('user_id', validators=[DataRequired()])
     destination = StringField('destination', validators=[DataRequired()])
-    currency = StringField('currency', validators=[DataRequired()], default='MXN')
     amount = FloatField('amount', validators=[DataRequired()])
+    currency = StringField('currency', validators=[DataRequired()], default='MXN')
     submit = SubmitField('Agregar')
 
 

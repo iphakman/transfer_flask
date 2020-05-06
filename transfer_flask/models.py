@@ -65,18 +65,20 @@ class CurrencyConvert(db.Model):
 
     @staticmethod
     def get_currency(cc):
-        r = CurrencyConvert.get_by_iso_code(cc)
+        r = CurrencyConvert.query.filter(CurrencyConvert.iso_code == cc).first()
         return r.variance
 
     @staticmethod
     def translate(amount_m, from_currency, to_currency):
         final_amount = amount_m
         if from_currency != to_currency:
-            usd = CurrencyConvert.get_currency(from_currency)
+            usd = round(CurrencyConvert.get_currency(from_currency), 2)
             final_amount *= usd
-            value = CurrencyConvert.get_currency(from_currency)
+
+            value = round(CurrencyConvert.get_currency(to_currency), 2)
             final_amount /= value
-        return amount_m
+
+        return round(final_amount, 2)
 
     @staticmethod
     def get_all():
@@ -130,9 +132,6 @@ class Transaction(db.Model):
             db.session.add(self)
         if not self.destination:
             Users.get_email(self.destination)
-
-        print("USER ID: ", self.user_id)
-        print("EMAIL DESTINATARIO:", self.destination)
 
         saved = False
         count = 0

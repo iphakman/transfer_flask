@@ -10,13 +10,15 @@
                 <th class="encabezado" width="15%">AMOUNT</th>
                 <th class="encabezado" width="15%">CURRENCY</th>
                 <th class="encabezado" width="60%">RECEIVER</th>
+                <th class="encabezado" width="60%">STATUS</th>
             </tr>
             {% for tran in trans %}
                 <tr>
                     <td class="celda" width="10%">{{ tran.id }}</td>
                     <td class="celda" width="15%">{{ tran.amount }}</td>
                     <td class="celda" width="15%">{{ tran.currency }}</td>
-                    <td class="celda" width="60%"><a href="/">{{ tran.destination }}</a></td>
+                    <td class="celda" width="50%">{{ tran.destination }}</td>
+                    <td class="celda" width="10%">{{ tran.status }}</td>
                 </tr>
             {% endfor %}
         </table>
