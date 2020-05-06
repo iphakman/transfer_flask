@@ -11,6 +11,8 @@
 #### show_transaction    GET        /users/<int:id>/transaction
 #### user_form           GET, POST  /users
 #### users               GET        /users/<int:id>/
+#### renew_currencies    GET, POST  /currencies_add
+#### get_currencies      GET        /currencies
 
 ### We can add users/transactions
 ### Data stored into postgres db
@@ -50,9 +52,23 @@
 #### /users/<int:id>/transaction    - id refers to userid
 ### Will list transactions of the user(id)
 
+## get_currencies
+#### /currencies
+### Will list all currencies available on the database
+
+## renew_currencies
+#### /currencies_add
+### Will update the rate for each currencies, from google.com (get_currency_date)
+
 ## DB MODELS
 ### users
 ####  id | name  | last_name | password |        email         |     msdi      | is_admin | phone_number 
-
 ### transaction
 ####  id | user_id | amount |     destination      | currency 
+
+### user_balance
+####  id | user_id |  amount  | currency |       last_modified        | transaction_id 
+
+### convertion
+####  id | state | currency | symbol | iso_code | fractional_unit | variance 
+
