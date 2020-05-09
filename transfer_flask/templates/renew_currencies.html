@@ -1,17 +1,17 @@
 {% extends "base_template.html" %}
 
-{% block title %}Renovar monedas.{% endblock %}
+{% block title %}Sign up{% endblock %}
 
 {% block content %}
 
 <form action="" class="form_contact" method="post" novalidate>
     <div class="user_info">
-        <h2>RENOVAR MONEDAS</h2>
+        <h2>ACTUALIZAR TIPO DE CAMBIO</h2>
 
-        {{ form.filename }}
+        {{ form.usage }}
+        {{ form.usage.label }}
 
         {{ form.submit(id="btnRenew") }}
     </div>
 </form>
-
 {% endblock %}

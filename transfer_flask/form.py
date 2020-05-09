@@ -33,5 +33,5 @@ class AddTransForm(FlaskForm):
 
 
 class AddCurrencies(FlaskForm):
-    filename = FileField('File_name', validators=[DataRequired()])
+    usage = StringField('usage', validators=[DataRequired()])
     submit = SubmitField('Renovar')

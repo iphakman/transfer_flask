@@ -5,3 +5,4 @@ transfer_flask/__pycache__/*.pyc
 venv
 .idea
 old_information
+validaciones_docker_compose_umba.txt

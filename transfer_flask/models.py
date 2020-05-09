@@ -58,10 +58,12 @@ class CurrencyConvert(db.Model):
     iso_code = db.Column(db.String(3))
     fractional_unit = db.Column(db.String, nullable=False)
     variance = db.Column(db.Float)
+    who = db.Column(db.Integer, db.ForeignKey('users.id',
+                    ondelete='CASCADE'), nullable=False)
 
     @staticmethod
-    def get_by_currency(currency):
-        return Users.query.get(currency)
+    def get_by_id(id):
+        return Users.query.get(id)
 
     @staticmethod
     def get_currency(cc):
@@ -83,6 +85,11 @@ class CurrencyConvert(db.Model):
     @staticmethod
     def get_all():
         return CurrencyConvert.query.all()
+
+    def save(self):
+        if not self.id:
+            db.session.add(self)
+        db.session.commit()
 
 
 class Balance(db.Model):

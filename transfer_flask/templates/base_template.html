@@ -37,6 +37,7 @@
     </header>
 
     <section class="form_wrap">
+        {% block content %}{% endblock %}
         <section class="contact_info">
             <section class="info_title">
                 <span class="icon-user"></span>
@@ -64,7 +65,6 @@
                 </p>
             </section>
         </section>
-        {% block content %}{% endblock %}
     </section>
 
 </body>

@@ -1,7 +1,7 @@
 from flask_paginate import Pagination, get_page_args
 from flask import render_template, redirect, request, url_for, abort, session
 from flask_login import (LoginManager, current_user, login_user,
-                         logout_user, login_required, session_protected)
+                         logout_user, login_required)
 from .form import AddUserForm, LoginForm, AddTransForm, AddCurrencies
 from datetime import datetime
 from . import create_app, db, get_currency_date
@@ -9,14 +9,16 @@ from werkzeug.urls import url_parse
 from flask_migrate import Migrate
 
 app = create_app()
-# app.send_static_file('base.css')
 
 from .models import Users, Transaction, Balance, CurrencyConvert
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
-migrate = Migrate(app, db)
 db.create_all()
+migrate = Migrate()
+
+with app.app_context():
+    migrate.init_app(app, db)
 
 
 @app.route('/')
@@ -143,41 +145,37 @@ def get_currencies():
                            per_page=per_page, pagination=pagination)
 
 
-@app.route("/currencies_add", methods=['GET', 'POST'])
+@app.route('/currencies_add', methods=['GET', 'POST'])
+@login_required
 def renew_currencies():
+    user_logged = session['_user_id']
 
     form = AddCurrencies()
-    print("form is AddCurrencies")
-    if form.validate_on_submit():
-        filename = form.filename.data
-        print("validate file...", filename)
-        if filename is None:
-            error = f'El archivo {filename} no existe.'
-            print(error)
-        else:
-            print("Validating currencies from file", filename)
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            situation = form.usage.data
+            currencies = CurrencyConvert.get_all()
+            user = Users.get_by_id(user_logged)
 
-            with open(filename) as ff:
-                lines = ff.readlines()
-                print("Total lines: ", len(lines))
+            for currency in currencies:
 
-                for line in lines:
-                    print("*** line:", line)
-                    values = line.split(',')
-                    currency = values[3]
+                new_currency = CurrencyConvert.get_by_id(currency.id)
+                rate = get_currency_date(currency.iso_code)
 
-                    rate = get_currency_date(currency)
+                print("{}: {} --> {}".format(situation, new_currency, rate))
 
-                    currency_rate = CurrencyConvert(state=line[0], currency=line[1],
-                                                    symbol=line[2], iso_code=line[3],
-                                                    fractional_unit=line[4], variance=rate)
-
-                    currency_rate.save()
+                if user.is_admin:
+                    pass
+                    # new_currency.variance = rate
+                    # new_currency.who = user.id
+                    # new_currency.save()
 
             next_page = request.args.get('next', None)
             if not next_page or url_parse(next_page).netloc != '':
                 next_page = url_for('currencies')
             return redirect(next_page)
+        else:
+            print("Failed validate on submit")
 
     return render_template("renew_currencies.html", form=form)
 
@@ -221,10 +219,9 @@ def user_form():
 
 
 @app.route("/users/<int:id>/")
-# @login_required
+@login_required
 def users(id=None):
     return render_template("users.html", id=id)
-    # return "User: {}.".format(id)
 
 
 @app.route('/logout')
